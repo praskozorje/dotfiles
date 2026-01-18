@@ -16,6 +16,7 @@ return {
         vim.g.compile_mode = {
             -- to add ANSI escape code support, add:
             baleia_setup = true,
+            auto_jump_to_first_error = false,
         }
     end
 }

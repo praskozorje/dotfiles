@@ -1,85 +1,43 @@
--- ### keybindings cheetsheet ###
--- yy - yank the line
--- yyp - yank and paste the line
-
 local keymap = vim.keymap.set
-local opts = opts
-
--- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect'
+local opts = { noremap = true, silent = true }
 
 -- [[ Basic Keymaps ]]
--- Set <space> as the leader key
--- See `:help mapleader`
---  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = " "
+keymap({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
--- Keymaps for better default experience
--- See `:help vim.keymap.set()`
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = "Move up (including wrapped lines)" })
+keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = "Move down (including wrapped lines)" })
 
--- Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+keymap('n', '<leader>/', ':noh<CR>', { desc = "Clear search highlight" })
+keymap('n', '<leader>w', ':w<CR>', { desc = "Save file" })
+keymap('n', '<leader>q', ':bd<CR>', { desc = "Close buffer (Quit)" })
+keymap('i', 'jk', '<ESC>', { desc = "Exit insert mode" })
+keymap({'v', 'c'}, '<leader>[', '<ESC>', { desc = "Exit mode" })
 
-keymap('n', '<leader>/', ':noh<CR>',{noremap = true}) -- stops search highlighting
-keymap('n', '<leader>w', ':w<CR>',{noremap = true}) -- save
-keymap('n', '<leader>q', ':bd<CR>',{noremap = true}) -- quit
-keymap('i', 'jk', '<ESC>', opts)
-keymap({'v', 'c',}, '<leader>[', '<ESC>', opts)
+keymap('n', '<leader><CR>', ':so %<CR>', { desc = "Source current file" })
+keymap('n', '<leader>ev', ':vsplit ~/.config/nvim/lua/settings/keymaps.lua<CR>', { desc = "Edit keymaps" })
+keymap('n', '<leader>tt', function() require("trouble").toggle("workspace_diagnostics") end, { desc = "Toggle Trouble diagnostics" })
 
-keymap('n', '<leader><CR>', ':so %<CR>',{noremap = true}) -- source conf file
-keymap('n', '<leader>ev', ':vsplit ~/.config/nvim/lua/settings/keymaps.lua<CR>',{noremap = true})
-keymap('n', '<leader>tt', function() require("trouble").toggle("workspace_diagnostics") end)
---keymap('n', '<leader>b', ':Compile bash build.sh<CR>', {noremap = true})
+keymap('n', '<leader>y', '"+y', { desc = "Yank to system clipboard" })
+keymap('n', '<C-h>', '<C-w>h', { desc = "Go to left window" })
+keymap('n', '<C-j>', '<C-w>j', { desc = "Go to bottom window" })
+keymap('n', '<C-k>', '<C-w>k', { desc = "Go to top window" })
+keymap('n', '<C-l>', '<C-w>l', { desc = "Go to right window" })
+keymap('n', '<C-r>', '<C-w>R', { desc = "Rotate windows" })
 
--- [[ Configure Telescope ]]
--- See `:help telescope` and `:help telescope.setup()`
+keymap('n', '<leader>v', ':vsplit | lua vim.lsp.buf.definition()<CR>', { desc = 'Go to definition in [v]ertical split' })
 
--- Enable telescope fzf native, if installed
---local builtin = require('telescope.builtin')
---
----- See `:help telescope.builtin`
---vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = '[?] Find recently opened files' })
---
---vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
---vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
---vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
---vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
---vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
+keymap('n', '<leader>j', 'ddp', { desc = "Move line down" })
+keymap('n', '<leader>k', 'ddkP', { desc = "Move line up" })
 
--- copy selection to system clipboard
-keymap('n', '<leader>y', '"+y', opts)
+keymap('n', '<leader>n', ':bnext<CR>', { desc = "Next buffer" })
+keymap('n', '<leader>h', ':bprevious<CR>', { desc = "Previous buffer" })
+keymap('n', '<leader>o', ':copen<CR>', { desc = "Open Quickfix list" })
+keymap('n', '<leader>cc', ':ccl<CR>', { desc = "Close Quickfix list" })
 
--- normal mode navigation, no ctrl + w
-keymap('n', '<C-h>', '<C-w>h', opts)
-keymap('n', '<C-j>', '<C-w>j', opts)
-keymap('n', '<C-k>', '<C-w>k', opts)
-keymap('n', '<C-l>', '<C-w>l', opts)
-keymap('n', '<leader>v', ':vsplit | lua vim.lsp.buf.definition()<CR>', {desc = 'Open function under the cursor in [v]ertical split'})
+keymap('v', '<', '<gv', { desc = "Indent left and re-select" })
+keymap('v', '>', '>gv', { desc = "Indent right and re-select" })
 
--- rotate windows
-keymap('n', '<C-r>', '<C-w>R', opts)
-
--- move line up/down
-keymap('n', '<leader>j', 'ddp', opts)
-keymap('n', '<leader>k', 'ddkP', opts)
-
--- buffers
-keymap('n', '<leader>l', ':bnext<CR>', opts)
-keymap('n', '<leader>h', ':bprevious<CR>', opts)
-
--- quickfix list
-keymap('n', '<leader>o', ':copen<CR>', opts)
-keymap('n', '<leader>cc', ':ccl<CR>', opts)
-
--- indent
-keymap('v', '<', '<gv', opts)
-keymap('v', '>', '>gv', opts)
-
--- make 
-keymap('n', '<F5>', ':Compile make<CR>',{noremap = true})
-
--- rename
-
-keymap('n', '<F2>', ':lua vim.lsp.buf.rename()<CR>',{noremap = true})
+keymap('n', '<F5>', ':Compile make<CR>', { desc = "Compile using Makefile" })
+keymap('n', '<F2>', ':lua vim.lsp.buf.rename()<CR>', { desc = "LSP Rename" })
+keymap('n', '<leader>l', ':set list!<CR>', { desc = 'Toggle invisible characters (listchars)' })

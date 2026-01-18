@@ -26,7 +26,8 @@ if vim.g.neovide then
     vim.g.neovide_cursor_animate_in_insert_mode = false
     vim.g.neovide_fullscreen = true
     vim.opt.linespace = 5
+    vim.o.guifont = "Martian Mono:h12"
 end
 
 --vim.cmd.colorscheme("gruber-darker")
---vim.cmd([[colorscheme modus]]) -- modus_operandi, modus_vivendi
+--vim.cmd([[colorscheme modus_operandi]]) -- modus_operandi, modus_vivendi

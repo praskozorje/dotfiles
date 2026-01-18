@@ -15,7 +15,7 @@ return {
 
             palette = {
                 dawn = {
-                    base='#fcf5e4'
+                    base=''
                 }
             }
         })

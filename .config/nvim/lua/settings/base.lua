@@ -2,8 +2,15 @@
 -- See `:help vim.o`
 
 
---vim.o.list = true
---vim.o.listchars = "space:·" --trail:~,tab:··,nbsp:␣eol:¤,
+vim.o.list = true
+vim.opt.listchars = {
+  tab = '→ ',
+  eol = '↲',
+  trail = '×',
+  space = '⋅',
+  multispace = '· ',
+  lead = ' ',
+}
 vim.o.autoread = true
 vim.o.background = dark
 vim.o.backup = false -- disable backup file
@@ -18,7 +25,7 @@ vim.o.number = true
 vim.o.rnu = true
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
-vim.o.softtabstop = 0
+vim.o.softtabstop = 4
 vim.o.expandtab = true
 vim.o.swapfile = false
 vim.o.termguicolors = true
@@ -32,7 +39,7 @@ vim.o.smartcase = true
 vim.o.smartindent = true
 vim.o.undofile = true
 vim.o.showcmd = false
-vim.o.signcolumn = "yes"
+vim.o.signcolumn = "no"
 vim.o.timeoutlen = 1000
 vim.o.splitright = true
 
