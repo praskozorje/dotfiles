@@ -2,27 +2,57 @@
 --    "blazkowolf/gruber-darker.nvim"
 --}
 
+-- return { "savq/melange-nvim" }
+
 -- lua/plugins/rose-pine.lua
-return {
-	"rose-pine/neovim",
-	name = "rose-pine",
-	config = function()
-        require("rose-pine").setup({
-            variant = "dawn", -- auto, main, moon, or dawn
-            dark_variant = "moon", -- main, moon, or dawn
-            dim_inactive_windows = false,
-            extend_background_behind_borders = true,
-
-            palette = {
-                dawn = {
-                    base=''
-                }
-            }
-        })
-
-        vim.cmd("colorscheme rose-pine-dawn")
-	end
-}
+--return {
+--	"rose-pine/neovim",
+--	name = "rose-pine",
+--	config = function()
+--        require("rose-pine").setup({
+--            variant = "dawn", -- auto, main, moon, or dawn
+--            dark_variant = "moon", -- main, moon, or dawn
+--            dim_inactive_windows = false,
+--            extend_background_behind_borders = true,
+--
+--            styles = {
+--                bold = true,
+--                italic = false,
+--            },
+--
+--            palette = {
+--                dawn = {
+--                    base='#fcf5e4',
+--                    surface = "#EBE5DA",
+--                    overlay = "#E1D8C9",
+--                    muted = "#8A8073",
+--                    subtle = "#A39788",
+--                    text = "#4A4540",
+--                    love = "#C4727F",
+--                    gold = "#C49646",
+--                    rose = "#B3808D",
+--                    pine = "#78997A",
+--                    foam = "#7B9C9C",
+--                    iris = "#A0829D",
+--                    highlight_low = "#EBE5DA",
+--                    highlight_med = "#E1D8C9",
+--                    highlight_high = "#C8BDB0",
+--                }
+--            },
+--            highlight_groups = {
+--                Keyword = { bold = true },
+--                Statement = { bold = true },
+--                Conditional = { bold = true },
+--                Repeat = { bold = true },
+--                Exception = { bold = true },
+--                Include = { bold = true },
+--                Type = { bold = true },
+--            }
+--        })
+--
+--        vim.cmd("colorscheme rose-pine-dawn")
+--	end
+--}
 
 
 -- lua/plugins/colorscheme.lua
@@ -95,27 +125,47 @@ return {
 --    },
 --}
 
---return {
---    'sainnhe/gruvbox-material',
---    lazy = false, -- make sure we load this during startup if it is your main colorscheme
---    priority = 1000, -- make sure to load this before all the other start plugins
---    config = function()
---        vim.cmd([[
---            set background=light
---            let g:gruvbox_material_better_performance = 1
---            let g:gruvbox_material_foreground = 'material'
---            let g:gruvbox_material_disable_italic_comment = 1
---            let g:gruvbox_material_enable_bold = 1
---
---            let g:gruvbox_material_diagnostic_text_highlight = 1
---            " let g:gruvbox_material_diagnostic_line_highlight = 1
---            let g:gruvbox_material_diagnostic_virtual_text = "colored"
---            let g:gruvbox_material_sign_column_background = 'none'
---
---            colorscheme gruvbox-material
---            ]])
---    end,
---}
+return {
+    'sainnhe/gruvbox-material',
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+        vim.api.nvim_create_autocmd("ColorScheme", {
+            pattern = "gruvbox-material",
+            callback = function()
+                local bold_groups = {
+                    "Keyword", "Statement", "Conditional",
+                    "Repeat", "Exception", "Include", "Type"
+                }
+                for _, group in ipairs(bold_groups) do
+                    -- Fetch the resolved colors (link = false ensures we get the actual hex codes, not just a reference)
+                    local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+                    -- Add the bold attribute
+                    hl.bold = true
+                    -- Reapply the highlight group with the preserved colors
+                    vim.api.nvim_set_hl(0, group, hl)
+                end
+            end,
+        })
+
+        vim.cmd([[
+            set background=light
+            let g:gruvbox_material_better_performance = 1
+            let g:gruvbox_material_foreground = 'original'
+            let g:gruvbox_material_background = 'soft'
+            let g:gruvbox_material_colors_override = {'bg0':['#fcf5e4', '234']}
+            let g:gruvbox_material_disable_italic_comment = 1
+            let g:gruvbox_material_enable_bold = 1
+
+            let g:gruvbox_material_diagnostic_text_highlight = 1
+            " let g:gruvbox_material_diagnostic_line_highlight = 1
+            let g:gruvbox_material_diagnostic_virtual_text = "colored"
+            let g:gruvbox_material_sign_column_background = 'none'
+
+            colorscheme gruvbox-material
+            ]])
+    end,
+}
 
 --return {
 --    'ellisonleao/gruvbox.nvim',
