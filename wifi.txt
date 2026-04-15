@@ -1,0 +1,14 @@
+builtin rtw88 driver does not work well with my usb wifi tplink archer t4u
+blocklist it
+create /etc/modprobe.d/rtw88-blacklist.conf
+add:
+blacklist rtw88_8822bu
+blacklist rtw88_8822b
+blacklist rtw88_usb
+blacklist rtw88_core
+install: https://github.com/RinCat/RTL88x2BU-Linux-Driver
+create: /etc/modprobe.d/88x2bu.conf
+add:
+options 88x2bu rtw_switch_usb_mode=2 rtw_vht_enable=1 rtw_power_mgnt=0 rtw_enusbss=0 rtw_led_ctrl=1 rtw_stbc_cap=0 rtw_ldpc_cap=0 rtw_ampdu_amsdu=0
+apply to boot image: sudo mkinitcpio -P
+
